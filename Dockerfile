@@ -5,8 +5,7 @@
 #
 #
 
-FROM		ubuntu:12.10
-MAINTAINER	Guillaume J. Charmes <guillaume@charmes.net>
+FROM		ubuntu:16.04
 
 RUN		apt-get update -qq
 
@@ -14,12 +13,17 @@ RUN		apt-get install -qqy automake
 RUN		apt-get install -qqy libcurl4-openssl-dev
 RUN		apt-get install -qqy git
 RUN		apt-get install -qqy make
+RUN             apt-get install -qqy build-essential libssl-dev \
+                        libgmp-dev \
+                        libjansson-dev \
+                        libcurl3 \
+                        libjansson4
+RUN		rm -rf /var/lib/apt/lists/*
 
-RUN		git clone https://github.com/pooler/cpuminer
+RUN             git clone https://github.com/zcoinofficial/cpuminer-xzc
 
-RUN		cd cpuminer && ./autogen.sh
-RUN		cd cpuminer && ./configure CFLAGS="-O3"
-RUN		cd cpuminer && make
+RUN             cd cpuminer-xzc && ./build.sh
 
-WORKDIR		/cpuminer
+WORKDIR         /cpuminer-xzc
+
 ENTRYPOINT	["./cpuminer"]
